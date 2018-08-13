@@ -17,6 +17,17 @@ namespace WindowsFormsApp2
             this.sexo = "";
             this.profesion = "";
         }
+
+        public Persona(string cui, string nit, string nombre, string nac, string sexo, string profesion) {
+            this.cui = cui;
+            this.nit = nit;
+            this.nombre_completo = nombre;
+            this.nacionalidad = nac;
+            this.sexo = sexo;
+            this.profesion = profesion;
+            this.fec_nacimiento = DateTime.Now;
+        }
+
         public string cui { get; set; }
         public string nit { get; set; }
         public string nombre_completo { get; set; }
