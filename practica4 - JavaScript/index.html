@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <meta charset="UTF-8"> 
+        <title>Uso de JavaScript</title>
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> 
+        <link rel="stylesheet" href="bootstrap_flatty.min.css">
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">-->
+    </head>
+    <body>
+        
+           
+      <div class="container">
+        
+        <div class="row">
+            <div class="col-md-10">
+
+                <p class="text-justify">
+                  <label>Ingrese el texto original</label>
+                  <br>
+                  <textarea id="txtEntrada" cols="100" rows="6"></textarea>
+                  <br>
+                  <br>
+                  <label>Salida</label><br>
+                  <textarea id="txtSalida" cols="100" rows="6"></textarea>
+                </p>
+
+                <p>
+                    <button type="button" id="btn1" class="btn btn-primary">Convertir</button>
+                </p>
+            </div>
+        </div>
+        
+
+        <div class="row">
+            <div class="col-md-12 jumbotron text-center">
+              Copyright 2018 - CUNOR
+            </div>
+          </div>    
+      </div>
+      <script src="jquery.js"></script>
+      <script>
+        $(document).ready(function(){
+
+          $('#btn1').click(function(){
+              var entrada = $("#txtEntrada").val();
+              var salida = binToASCII(entrada);
+              $("#txtSalida").val(salida);
+          });
+        });
+
+        function binToASCII(bin){
+          
+          var strAscii = "";
+          var arrBin = bin.split(" ");
+          for(m = 0; m<= arrBin.length-1; m++){
+            var suma = 0;
+            var cont = 0;
+            bin = arrBin[m];
+            for(n=bin.length-1;n>0;n--){
+              val = 0;
+              if (2*bin[n] == 0 && cont == 0){
+                val = 0;
+              }else{
+                val = Math.pow((2*bin[n]),cont);
+              }
+              
+              cont++;
+              suma +=parseInt(val);
+            }
+
+            strAscii = strAscii + String.fromCharCode(parseInt(suma));
+          }
+          
+          return strAscii;
+        }
+
+        function ASCIIToBinario(cadena){
+          var binario = "";
+          for (n = 0; n<= cadena.length-1;n++){
+            var decimal = cadena[n].charCodeAt(0);
+            var bin2= "";
+            for(x=0;x<=7;x++){
+              var a = decimal / 2;
+              var b = decimal % 2;
+              decimal = a;
+              bin2 = Math.trunc(b) + bin2;
+            }
+            binario = binario + bin2 + " ";
+          }
+
+          return binario;
+        }
+        
+      </script>
+    </body>
+</html>
