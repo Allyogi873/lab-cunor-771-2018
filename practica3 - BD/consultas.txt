@@ -1,0 +1,46 @@
+--- SELECCIÓN UTILIZANDO INNER JOIN 
+SELECT f.cod_factura, f.serie, f.fec_factura, c.nombre
+FROM cliente AS c
+INNER JOIN factura AS f ON c.cod_cliente = f.cod_cliente
+ORDER BY f.fec_factura DESC, f.serie ASC
+
+--- TOTAL POR CÓDIGO DE FACTURA
+
+SELECT df.cod_factura, SUM(df.cantidad * df.precio_unitario) AS total
+FROM det_factura AS df
+GROUP BY df.cod_factura
+
+---- TOTAL DE FACTURA POR NOMBRE DE CLIENTE
+
+SELECT df.cod_factura, c.nombre, SUM(df.cantidad * df.precio_unitario) AS total
+FROM det_factura AS df
+INNER JOIN factura AS f ON f.cod_factura = df.cod_factura
+INNER JOIN cliente AS c ON c.cod_cliente = f.cod_cliente
+GROUP BY df.cod_factura
+
+---- TOTAL DE COMPRAS REALIZADAS POR CLIENTE
+
+SELECT c.nombre, SUM(df.cantidad * df.precio_unitario) AS total
+FROM det_factura AS df
+INNER JOIN factura AS f ON f.cod_factura = df.cod_factura
+INNER JOIN cliente AS c ON c.cod_cliente = f.cod_cliente
+GROUP BY c.nombre
+ORDER BY total DESC
+
+-- PRODUCTOS COMPRADOS POR PERSONA
+
+SELECT c.nombre, df.descripcion
+FROM det_factura AS df
+INNER JOIN factura AS f ON f.cod_factura = df.cod_factura
+INNER JOIN cliente AS c ON c.cod_cliente = f.cod_cliente
+WHERE c.cod_cliente = 1
+
+
+-- Muestra los productos comprados y el total de tomate por cliente.
+
+SELECT c.nombre, SUM(df.cantidad) AS cantidad, SUM(df.cantidad*df.precio_unitario) AS total
+FROM det_factura AS df
+INNER JOIN factura AS f ON f.cod_factura = df.cod_factura
+INNER JOIN cliente AS c ON c.cod_cliente = f.cod_cliente
+WHERE df.descripcion LIKE '%Tomate%'
+GROUP BY c.nombre
