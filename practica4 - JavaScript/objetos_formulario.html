@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <meta charset="UTF-8"> 
+        <title>Uso de JavaScript</title>
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> 
+        <link rel="stylesheet" href="bootstrap_flatty.min.css">
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">-->
+    </head>
+    <body>
+        
+           
+      <div class="container">
+        <div class="row">
+        <br><br><br>&nbsp;
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+              <button id="btnAgregar" class="btn btn-primary">+ Agregar línea</button>
+              <br><br>
+                  <table id="tblProductos" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        <th>#</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                  </table>
+                
+            </div>
+        </div>
+        
+
+        <div class="row">
+            <div class="col-md-12 jumbotron text-center">
+              Copyright 2018 - CUNOR
+            </div>
+          </div>    
+      </div>
+      <script src="jquery.js"></script>
+      <script>
+        var contador = 0;
+        $(document).ready(function(){
+            $('#btnAgregar').click(function(){
+              contador++;
+              var fila="<tr>" + 
+              "<td>"+ contador + "</td>"+
+              "<td><input class='form-control cantidad' type='number'></td>"+
+              "<td><input class='form-control' type='text'></td>"+
+              "<td><input class='form-control precio_unitario' type='number'></td>"+
+              "<td><input class='form-control subtotal' type='number'></td>"+
+              "<td><button class='btn btn-danger' onclick='eliminarFila(this)'>Eliminar</button></td>"+
+              "</tr>";
+
+              $("#tblProductos > tbody").append(fila);
+
+                $("input").change(function(){
+                  calcular();
+                });
+            });
+
+            
+        });
+
+        function eliminarFila(obj){
+          fila = $(obj).parent().parent();
+          $(fila).fadeOut(300).delay(100).remove();
+        }
+
+        function calcular(){
+            var filas = $("#tblProductos > tbody > tr");
+            
+            $('#tblProductos> tbody').find('tr').each(function(i,tr) {
+
+                cantidad = parseFloat($(tr).find('.cantidad').val());
+                precio_unitario = parseFloat($(tr).find('.precio_unitario').val());
+                
+                
+                if (cantidad != "" && precio_unitario != ""){
+                  $(tr).find('.subtotal').val("" + (cantidad*precio_unitario).toFixed(2));
+                }
+
+            })
+        }
+
+        
+        
+      </script>
+    </body>
+</html>

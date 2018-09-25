@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <meta charset="UTF-8"> 
+        <title>Uso de JavaScript</title>
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> 
+        <link rel="stylesheet" href="bootstrap_flatty.min.css">
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">-->
+    </head>
+    <body>
+        
+           
+      <div class="container">
+        
+        <div class="row">
+            <div class="col-md-10">
+
+                <p class="text-justify">
+                  <label>Ingrese la velocidad inicial</label>
+                  <br>
+                  <input id="txtVo" class="form-control">
+                  <br>
+                  <br>
+                  <label>Ingrese el ángulo</label><br>
+                  <input id="txtAngulo" class="form-control">
+                </p>
+
+                <p>
+                    <button type="button" id="btn1" class="btn btn-primary">Calcular</button>
+                </p>
+
+                <canvas id="canvas" width="690" height="300"></canvas>
+            </div>
+        </div>
+        
+
+        <div class="row">
+            <div class="col-md-12 jumbotron text-center">
+              Copyright 2018 - CUNOR
+            </div>
+          </div>    
+      </div>
+      <script src="jquery.js"></script>
+      <script>
+        $(document).ready(function(){
+
+          $('#btn1').click(function(){
+              var vo = parseFloat( $("#txtVo").val());
+              var an = (parseFloat( $("#txtAngulo").val()) * Math.PI)/180;
+
+              var vox = vo * Math.cos(an);
+              var voy = vo * Math.sin(an);
+              var tv = 2*(voy/9.8);
+              var ts = (voy/9.8);
+              var xmax = vox*tv;
+              var hmax = (Math.pow(voy,2))+(2*-9.8);
+              console.log(" tv " + tv);
+              var aux = 0;
+              for (var n = 0; n<=tv; n=n+0.5){
+                x= vox*n;
+                y = 0;
+                if (n > ts){  
+                  y=(voy*((ts-aux))) + ((-9.8 * Math.pow(((ts-aux)),2))/2);
+                  aux+=0.5;
+                }else{
+                  y=(voy*n) + ((-9.8 * Math.pow(n,2))/2);
+                }
+                
+                imprimirPunto(x, y, xmax, hmax);
+              }
+
+          });
+
+          function imprimirPunto(x,y, xmax, hmax){
+              var rect = canvas.getBoundingClientRect();
+              console.log(" X " + x + " Y " + y);
+
+              var x = ((x*690)/xmax);
+              var y = ((y*300)/hmax);
+              
+              //x = 690-x; // x == the location of the click in the document - the location (relative to the left) of the canvas in the document
+              d = 300-y; // y == the location of the click in the document - the location (relative to the top) of the canvas in the document
+              
+              // This method will handle the coordinates and will draw them in the canvas.
+              drawCoordinates(x,d);
+          }
+                    // Event will be a click event which can be retrieved as first parameter in the addEventListener(function(event){}); or in jQuery with $("selector").click(function(event){});
+          function getPosition(event){
+              var rect = canvas.getBoundingClientRect();
+              var x = event.clientX - rect.left; // x == the location of the click in the document - the location (relative to the left) of the canvas in the document
+              var y = event.clientY - rect.top; // y == the location of the click in the document - the location (relative to the top) of the canvas in the document
+              
+              // This method will handle the coordinates and will draw them in the canvas.
+              drawCoordinates(x,y);
+          }
+
+          function drawCoordinates(x,y){
+              var pointSize = 3; // Change according to the size of the point.
+              var ctx = document.getElementById("canvas").getContext("2d");
+
+
+              ctx.fillStyle = "#ff2626"; // Red color
+
+              ctx.beginPath(); //Start path
+              ctx.arc(x, y, pointSize, 0, Math.PI * 2, true); // Draw a point using the arc function of the canvas with a point structure.
+              ctx.fill(); // Close the path and fill.
+          }
+
+          $("#canvas").click(function(e){
+              getPosition(e); 
+          });
+
+          var pointSize = 3;
+        });
+
+       
+      </script>
+    </body>
+</html>

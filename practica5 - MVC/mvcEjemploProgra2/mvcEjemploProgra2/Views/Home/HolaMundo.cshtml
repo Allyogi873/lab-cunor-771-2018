@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Página de prueba";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="jumbotron">
+    @ViewBag.Title
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>No. persona</th>
+            <th>Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.items) {
+            <tr>
+                <td>
+                    @item.no_persona
+                </td>
+                <td>
+                    @item.nombre
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
