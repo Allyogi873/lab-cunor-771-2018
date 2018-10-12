@@ -1,0 +1,52 @@
+﻿@model IEnumerable<waPrueba5.Models.cliente>
+
+@{
+    ViewBag.Title = "Clientes";
+    Layout = "~/Views/Plantilla/default.cshtml";
+}
+
+<h2>Clientes</h2>
+
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create",null,new { @class ="btn btn-primary"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            NIT
+        </th>
+        <th>
+            Nombres
+        </th>
+        <th>
+            Apellidos
+        </th>
+        <th>
+            Dirección
+        </th>
+        <th>#</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombres)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.apellidos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.direccion)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.cod_cliente }, new { @class="btn btn-sm btn-success"}) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.cod_cliente }, new { @class = "btn btn-sm btn-primary" }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.cod_cliente }, new { @class = "btn btn-sm btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>

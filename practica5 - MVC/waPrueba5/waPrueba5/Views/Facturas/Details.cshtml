@@ -1,0 +1,63 @@
+﻿@model waPrueba5.Models.factura
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Plantilla/default.cshtml";
+}
+
+<h2>Ver Factura</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <td>Fecha</td>
+        <td>@String.Format("{0:dd/MM/yyyy}", Model.fec_factura)</td>
+    </tr>
+    <tr>
+        <td>Descripción</td>
+        <td>@Model.descripcion</td>
+    </tr>
+    <tr>
+        <td>NIT</td>
+        <td>@Model.cliente.nit</td>
+    </tr>
+    <tr>
+        <td>Cliente</td>
+        <td>@Model.cliente.nombres @Model.cliente.apellidos</td>
+    </tr>
+</table>
+
+<legend>Productos</legend>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Cantidad</th>
+            <th>Descripción</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ decimal? total = 0;}
+
+        @foreach (var itm in Model.det_factura) {
+            <tr>
+                <td>@itm.cantidad</td>
+                <td>@itm.producto.nombre</td>
+                <td>Q. @itm.precio_unitario</td>
+                <td>@{
+                    decimal? subtotal = 0;
+                    subtotal = itm.precio_unitario * itm.cantidad;
+                    total += subtotal;
+                }
+                Q. @String.Format("{0:#,##0.00}", subtotal) 
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">Total</td>
+            <td>Q. @String.Format("{0:#,##0.00}", total)</td>
+        </tr>
+    </tfoot>
+</table>
