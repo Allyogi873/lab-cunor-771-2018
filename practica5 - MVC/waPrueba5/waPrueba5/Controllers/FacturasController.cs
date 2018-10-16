@@ -30,23 +30,40 @@ namespace waPrueba5.Controllers
         // GET: Facturas/Create
         public ActionResult Create()
         {
+            var clientes = (from m in ctx.cliente
+                           select new SelectListItem { Value = "" + m.cod_cliente, Text = m.nombres + " " + m.apellidos }).ToList();
+
+            ViewBag.clientes = clientes;
+
+            var productos = (from m in ctx.producto
+                             select m);
+
+            ViewBag.productos = productos;
             return View();
         }
 
         // POST: Facturas/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(factura factura)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                ctx.factura.Add(factura);
+                ctx.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
+        }
+
+        public JsonResult getClientes(String busqueda) {
+            var query = from m in ctx.cliente
+                        where m.nit.Contains(busqueda) || m.nombres.Contains(busqueda)
+                        select new { m.cod_cliente, m.nit, m.nombres, m.apellidos, m.direccion };
+
+            return Json(query.ToList(), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Facturas/Edit/5

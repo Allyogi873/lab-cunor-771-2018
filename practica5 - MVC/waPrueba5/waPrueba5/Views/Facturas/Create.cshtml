@@ -1,0 +1,221 @@
+﻿@model waPrueba5.Models.factura
+@{
+    ViewBag.Title = "Nueva Factura";
+    Layout = "~/Views/Plantilla/default.cshtml";
+}
+
+<h2>Nueva Factura</h2>
+
+@using (Html.BeginForm())
+{
+    <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.fec_factura, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fec_factura, new { htmlAttributes = new { @class = "form-control", @type="date" } })
+                @Html.ValidationMessageFor(model => model.fec_factura, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.serie_factura, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.serie_factura, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.serie_factura, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            
+            <label>Cliente: <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bsqCliente">Buscar Cliente</button></label>
+            <div class="col-md-6">
+                @Html.HiddenFor(model => model.cod_cliente)
+                &nbsp;
+                <span id="nombre_cliente"></span>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <button type="button" data-toggle="modal" data-target="#mdlProductos" class="btn btn-success">Agregar Producto</button>
+            <table id="lstProductos" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Cantidad</th>
+                        <th>Producto</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">Total</td>
+                        <td class="total"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-primary">+ Crear Factura</button>
+}
+
+
+<div class="modal fade" id="mdlProductos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Productos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>ID</td>
+                            <td>Producto</td>
+                            <td>Precio</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var itm in ViewBag.productos) {
+                            <tr onclick="agregarProducto(@itm.cod_producto,'@itm.nombre',@itm.precio_unitario)">
+                                <td>@itm.cod_producto</td>
+                                <td>@itm.nombre</td>
+                                <td>@itm.precio_unitario</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bsqCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="txtBusqueda" class="form-control" /><button class="btn btn-success" type="button" onclick="buscarCliente()">Buscar Cliente</button>
+                <table id="lstClientes" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>NIT</td>
+                            <td>Nombre</td>
+                            <td>Dirección</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var prueba;
+
+        $(document).ready(function () {
+            
+        });
+
+        function buscarCliente() {
+            var txt = $("#txtBusqueda").val();
+
+            if (txt != "") {
+                $.ajax({
+                    dataType: "json",
+                    url: "/Facturas/getClientes",
+                    data: { "busqueda": txt },
+                    success: function (data) {
+                        $("#lstClientes > tbody").html("");
+                        for (n = 0; n < data.length; n++) {
+                            var fila = '<tr onclick="seleccionarCliente(' + data[n].cod_cliente + ',\'' + data[n].nombres + " " + data[n].apellidos + '\')">';
+                            fila += "<td>"+data[n].nit+"</td>";
+                            fila += "<td>" + data[n].nombres + " "+data[n].apellidos+"</td>";
+                            fila += "<td>" + data[n].direccion + "</td>";
+                            fila += "</tr>";
+                            $("#lstClientes > tbody").append(fila);
+                        }
+                    }
+                });
+            }
+            
+        }
+
+        var cnt = 0;
+        function agregarProducto(codProducto,nombre,precio){
+            $('#mdlProductos').modal('hide');
+            var fila = '<tr>';
+            fila += '<td>';
+            fila += '<input type="hidden" name="det_factura['+cnt+'].cod_producto" value="'+codProducto+'">';
+            fila += '<input type="text" name="det_factura['+cnt+'].cantidad" value="1" class="form-control cantidad"></td>';
+            fila += '<td>'+nombre+'</td>';
+            fila += '<td><input type="text" name="det_factura['+cnt+'].precio_unitario" value="'+precio+'" class="form-control precio_unitario"></td>';
+            fila += "<td><input class='form-control subtotal' type='text'></td>";
+            fila += "<td><button class='btn btn-danger' onclick='eliminarFila(this)'>Eliminar</button></td>";
+            fila += '</tr>';
+            $("#lstProductos > tbody").append(fila);
+
+            cnt++;
+            calcular();
+            $("input").change(function(){
+                calcular();
+            });
+        }
+        function seleccionarCliente(cod_cliente, nombre) {
+            $('#bsqCliente').modal('hide');
+            $('#cod_cliente').val(cod_cliente);
+            $('#nombre_cliente').html(nombre);
+        }
+
+        function eliminarFila(obj){
+            fila = $(obj).parent().parent();
+            $(fila).fadeOut(300).delay(100).remove();
+            calcular();
+        }
+
+        function calcular(){
+            var filas = $("#tblProductos > tbody > tr");
+            var total = 0;
+            $('#lstProductos> tbody').find('tr').each(function(i,tr) {
+
+                cantidad = parseFloat($(tr).find('.cantidad').val());
+                precio_unitario = parseFloat($(tr).find('.precio_unitario').val());
+                
+                
+                if (cantidad != "" && precio_unitario != ""){
+                    total += cantidad*precio_unitario;
+                    $(".total").html("Q. " + total.toFixed(2));
+                    $(tr).find('.subtotal').val("" + (cantidad*precio_unitario).toFixed(2));
+                }
+
+            })
+        }
+    </script>    
+}
