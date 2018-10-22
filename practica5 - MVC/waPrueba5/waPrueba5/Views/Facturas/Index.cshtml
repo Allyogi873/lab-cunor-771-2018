@@ -1,14 +1,17 @@
-﻿@model IEnumerable<waPrueba5.Models.factura>
-
-@{
+﻿@{
     ViewBag.Title = "Facturas";
     Layout = "~/Views/Plantilla/default.cshtml";
 }
+
+@using PagedList.Mvc;
+@using PagedList;
 
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Nueva Factura", "Create", null,new { @class="btn btn-primary btn-sm"})
+
+
 </p>
 <table class="table">
     <tr>
@@ -27,19 +30,19 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in ViewBag.pagina) {
     <tr>
         <td>
             @String.Format("{0:dd/MM/yyyy}", item.fec_factura)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.serie_factura)
+            @item.serie_factura
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.descripcion)
+            @item.descripcion
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.cliente.nombres) @Html.DisplayFor(modelItem => item.cliente.apellidos)
+            @item.cliente.nombres @item.cliente.apellidos
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.cod_factura }) |
@@ -50,3 +53,5 @@
 }
 
 </table>
+
+@Html.PagedListPager((IPagedList)ViewBag.pagina, page => Url.Action("Index", new { page = page }))

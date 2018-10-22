@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using waPrueba5.Models;
+using PagedList.Mvc;
+using PagedList;
 
 namespace waPrueba5.Controllers
 {
@@ -11,13 +13,19 @@ namespace waPrueba5.Controllers
     {
         ctxPruebas ctx = new ctxPruebas();
         // GET: Facturas
-        public ActionResult Index()
+        public ActionResult Index(int? page, string busqueda)
         {
-            var query = from f in ctx.factura
-                        select f;
+            var pageNumber = page ?? 1;
 
+            var query = ctx.factura.ToList();
 
-            return View(query.ToList());
+            if (busqueda != "" && busqueda!= null) {
+                query = query.Where(a => a.descripcion.Contains(busqueda)).ToList();
+            }
+
+            var unaPagina = query.ToPagedList(pageNumber, 5);
+            ViewBag.pagina = unaPagina;
+            return View();
         }
 
         // GET: Facturas/Details/5
