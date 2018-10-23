@@ -6,13 +6,32 @@
 @using PagedList.Mvc;
 @using PagedList;
 
-<h2>Index</h2>
+<h2>Facturas</h2>
 
-<p>
-    @Html.ActionLink("Nueva Factura", "Create", null,new { @class="btn btn-primary btn-sm"})
+<div class="row"><div class="col-md-6">
+       @Html.ActionLink("Nueva Factura", "Create", null, new { @class = "btn btn-primary btn-sm" })
+    </div>
+    
 
+    @using (Html.BeginForm("Index", "Facturas", FormMethod.Get, new { @class="col-md-6"}))
+    {
+        <div class="card-body row no-gutters align-items-center">
+            <div class="col-auto">
+                <i class="fas fa-search h4 text-body"></i>
+            </div>
+            <!--end of col-->
+            <div class="col">
+                <input class="form-control form-control-sm form-control-borderless" name="busqueda" type="search" placeholder="Ingrese un texto de búsqueda.">
+            </div>
+            <!--end of col-->
+            <div class="col-auto">
+                <button class="btn btn-sm btn-success" type="submit">Buscar</button>
+            </div>
+            <!--end of col-->
+        </div>
+    }
 
-</p>
+</div>
 <table class="table">
     <tr>
         <th>

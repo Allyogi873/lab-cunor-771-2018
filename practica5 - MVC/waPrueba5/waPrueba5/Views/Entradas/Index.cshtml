@@ -1,0 +1,53 @@
+﻿@model IEnumerable<waPrueba5.Models.entrada>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Plantilla/default.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.titulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fec_creacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fec_publicacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.autor)
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.titulo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fec_creacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fec_publicacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.autor)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.cod_entrada }) |
+            @Html.ActionLink("Details", "Details", new { id=item.cod_entrada }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.cod_entrada })
+        </td>
+    </tr>
+}
+
+</table>

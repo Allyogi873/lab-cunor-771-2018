@@ -12,6 +12,7 @@
         <AssociationConnector Association="ctxFacturacion.FK_factura_cliente" />
         <AssociationConnector Association="ctxFacturacion.FK_det_factura_factura" />
         <AssociationConnector Association="ctxFacturacion.FK_det_factura_producto" />
+        <EntityTypeShape EntityType="ctxFacturacion.entrada" Width="1.5" PointX="5.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

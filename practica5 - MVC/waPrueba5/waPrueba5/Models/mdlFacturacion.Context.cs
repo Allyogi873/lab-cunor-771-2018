@@ -29,5 +29,6 @@ namespace waPrueba5.Models
         public DbSet<det_factura> det_factura { get; set; }
         public DbSet<factura> factura { get; set; }
         public DbSet<producto> producto { get; set; }
+        public DbSet<entrada> entrada { get; set; }
     }
 }

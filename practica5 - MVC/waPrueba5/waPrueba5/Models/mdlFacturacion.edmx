@@ -25,6 +25,18 @@
           <Property Name="cod_producto" Type="int" />
           <Property Name="cod_factura" Type="int" />
         </EntityType>
+        <EntityType Name="entrada">
+          <Key>
+            <PropertyRef Name="cod_entrada" />
+          </Key>
+          <Property Name="cod_entrada" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titulo" Type="varchar(max)" />
+          <Property Name="contenido" Type="varchar(max)" />
+          <Property Name="fec_creacion" Type="datetime" />
+          <Property Name="fec_publicacion" Type="nchar" MaxLength="10" />
+          <Property Name="autor" Type="varchar" MaxLength="200" />
+          <Property Name="meta" Type="varchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="factura">
           <Key>
             <PropertyRef Name="cod_factura" />
@@ -82,6 +94,7 @@
         <EntityContainer Name="ctxFacturacionStoreContainer">
           <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="det_factura" EntityType="Self.det_factura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="entrada" EntityType="Self.entrada" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="factura" EntityType="Self.factura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="producto" EntityType="Self.producto" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_det_factura_factura" Association="Self.FK_det_factura_factura">
@@ -118,6 +131,7 @@
             <End Role="producto" EntitySet="producto" />
             <End Role="det_factura" EntitySet="det_factura" />
           </AssociationSet>
+          <EntitySet Name="entrada" EntityType="ctxFacturacion.entrada" />
         </EntityContainer>
         <EntityType Name="cliente">
           <Key>
@@ -199,6 +213,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="entrada">
+          <Key>
+            <PropertyRef Name="cod_entrada" />
+          </Key>
+          <Property Name="cod_entrada" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titulo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="contenido" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fec_creacion" Type="DateTime" Precision="3" />
+          <Property Name="fec_publicacion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="autor" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="meta" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -244,6 +270,19 @@
                 <ScalarProperty Name="precio_unitario" ColumnName="precio_unitario" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="cod_producto" ColumnName="cod_producto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="entrada">
+            <EntityTypeMapping TypeName="ctxFacturacion.entrada">
+              <MappingFragment StoreEntitySet="entrada">
+                <ScalarProperty Name="meta" ColumnName="meta" />
+                <ScalarProperty Name="autor" ColumnName="autor" />
+                <ScalarProperty Name="fec_publicacion" ColumnName="fec_publicacion" />
+                <ScalarProperty Name="fec_creacion" ColumnName="fec_creacion" />
+                <ScalarProperty Name="contenido" ColumnName="contenido" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="cod_entrada" ColumnName="cod_entrada" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
