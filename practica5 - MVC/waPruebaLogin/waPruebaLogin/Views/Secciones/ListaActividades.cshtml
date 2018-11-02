@@ -1,0 +1,47 @@
+﻿@model IEnumerable<waPruebaLogin.Models.actividad>
+
+@{
+    ViewBag.Title = "ListaActividades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ListaActividades</h2>
+
+<p>
+    @Html.ActionLink("Secciones", "Index")
+    @Html.ActionLink("Crear Actividad", "NuevaActividad", new {id = ViewBag.seccion })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cursos.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.seccion.letra)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cursos.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.seccion.letra)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.cod_actividad }) |
+            @Html.ActionLink("Details", "Details", new { id=item.cod_actividad }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.cod_actividad })
+        </td>
+    </tr>
+}
+
+</table>

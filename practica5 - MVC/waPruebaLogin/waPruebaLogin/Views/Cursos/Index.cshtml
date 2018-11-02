@@ -1,0 +1,64 @@
+﻿@model IEnumerable<waPruebaLogin.Models.cursos>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.creditos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.prerequisitos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.carrera.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ciclo.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pensum.nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creditos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.prerequisitos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.carrera.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ciclo.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pensum.nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.cod_curso }) |
+            @Html.ActionLink("Details", "Details", new { id=item.cod_curso }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.cod_curso })
+        </td>
+    </tr>
+}
+
+</table>

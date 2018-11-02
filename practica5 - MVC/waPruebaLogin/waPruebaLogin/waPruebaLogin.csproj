@@ -198,14 +198,21 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CatedraticosController.cs" />
+    <Compile Include="Controllers\CursosController.cs" />
+    <Compile Include="Controllers\EstudiantesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SeccionesController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Filters\FiltroAutorizador.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\actividad.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>mdlPrueba.tt</DependentUpon>
     </Compile>
@@ -218,7 +225,25 @@
     <Compile Include="Models\AspNetUsers.cs">
       <DependentUpon>mdlPrueba.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\carrera.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\catedratico.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ciclo.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\cursos.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\C__MigrationHistory.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\det_seccion.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\estudiante.cs">
       <DependentUpon>mdlPrueba.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
@@ -237,6 +262,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>mdlPrueba.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\nota.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\pensum.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\seccion.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -327,6 +361,25 @@
     <Content Include="Views\Usuarios\Details.cshtml" />
     <Content Include="Views\Usuarios\Edit.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Estudiantes\Create.cshtml" />
+    <Content Include="Views\Estudiantes\Delete.cshtml" />
+    <Content Include="Views\Estudiantes\Details.cshtml" />
+    <Content Include="Views\Estudiantes\Edit.cshtml" />
+    <Content Include="Views\Estudiantes\Index.cshtml" />
+    <Content Include="Views\Catedraticos\Create.cshtml" />
+    <Content Include="Views\Catedraticos\Delete.cshtml" />
+    <Content Include="Views\Catedraticos\Details.cshtml" />
+    <Content Include="Views\Catedraticos\Edit.cshtml" />
+    <Content Include="Views\Catedraticos\Index.cshtml" />
+    <Content Include="Views\Cursos\Create.cshtml" />
+    <Content Include="Views\Cursos\Delete.cshtml" />
+    <Content Include="Views\Cursos\Details.cshtml" />
+    <Content Include="Views\Cursos\Edit.cshtml" />
+    <Content Include="Views\Cursos\Index.cshtml" />
+    <Content Include="Views\Secciones\Index.cshtml" />
+    <Content Include="Views\Secciones\ListaActividades.cshtml" />
+    <Content Include="Views\Secciones\NuevaActividad.cshtml" />
+    <Content Include="Views\Secciones\Notas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -339,6 +392,7 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

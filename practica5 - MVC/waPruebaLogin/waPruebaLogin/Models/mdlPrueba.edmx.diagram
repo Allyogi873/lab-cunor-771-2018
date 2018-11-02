@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="241a70ff84f74db7a32ee4a3c76223bb" Name="Diagram1">
+      <Diagram DiagramId="241a70ff84f74db7a32ee4a3c76223bb" Name="Diagram1" ZoomLevel="100">
         <EntityTypeShape EntityType="mdlPrueba.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="mdlPrueba.AspNetRoles" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="mdlPrueba.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
@@ -14,6 +14,29 @@
         <AssociationConnector Association="mdlPrueba.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="mdlPrueba.AspNetUserRoles" ManuallyRouted="false" />
         <AssociationConnector Association="mdlPrueba.FK_AspNetUsers_AspNetRoles" />
+        <EntityTypeShape EntityType="mdlPrueba.carrera" Width="1.5" PointX="3.375" PointY="12.875" />
+        <EntityTypeShape EntityType="mdlPrueba.ciclo" Width="1.5" PointX="3.375" PointY="7.5" />
+        <EntityTypeShape EntityType="mdlPrueba.cursos" Width="1.5" PointX="5.625" PointY="7" />
+        <EntityTypeShape EntityType="mdlPrueba.pensum" Width="1.5" PointX="3.375" PointY="10.25" />
+        <AssociationConnector Association="mdlPrueba.FK_cursos_carrera" />
+        <AssociationConnector Association="mdlPrueba.FK_cursos_ciclo" />
+        <AssociationConnector Association="mdlPrueba.FK_cursos_pensum" />
+        <EntityTypeShape EntityType="mdlPrueba.actividad" Width="1.5" PointX="10.125" PointY="7.625" />
+        <EntityTypeShape EntityType="mdlPrueba.catedratico" Width="1.5" PointX="5.625" PointY="12" />
+        <EntityTypeShape EntityType="mdlPrueba.det_seccion" Width="1.5" PointX="10.125" PointY="4.625" />
+        <EntityTypeShape EntityType="mdlPrueba.estudiante" Width="1.5" PointX="10.125" PointY="10.75" />
+        <EntityTypeShape EntityType="mdlPrueba.nota" Width="1.5" PointX="12.375" PointY="7.25" />
+        <EntityTypeShape EntityType="mdlPrueba.seccion" Width="1.5" PointX="7.875" PointY="7.25" />
+        <AssociationConnector Association="mdlPrueba.FK_actividad_curso" />
+        <AssociationConnector Association="mdlPrueba.FK_actividad_seccion" />
+        <AssociationConnector Association="mdlPrueba.FK_nota_actividad" />
+        <AssociationConnector Association="mdlPrueba.FK_seccion_catedratico" />
+        <AssociationConnector Association="mdlPrueba.FK_nota_curso" />
+        <AssociationConnector Association="mdlPrueba.FK_seccion_curso" />
+        <AssociationConnector Association="mdlPrueba.FK_det_seccion_estudiante" />
+        <AssociationConnector Association="mdlPrueba.FK_det_seccion_seccion" />
+        <AssociationConnector Association="mdlPrueba.FK_nota_estudiante" />
+        <AssociationConnector Association="mdlPrueba.FK_nota_seccion" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

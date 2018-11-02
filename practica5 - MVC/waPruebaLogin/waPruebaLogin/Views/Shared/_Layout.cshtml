@@ -22,15 +22,15 @@
                 @Html.ActionLink("Nombre de aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-@if (Request.IsAuthenticated)
-{ 
+
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Estudiantes", "Index", "Estudiantes")</li>
+                    <li>@Html.ActionLink("Catedraticos", "Index", "Catedraticos")</li>
+                    <li>@Html.ActionLink("Cursos", "Index", "Cursos")</li>
                     <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
                 </ul>
-}
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

@@ -30,5 +30,15 @@ namespace waPruebaLogin.Models
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<carrera> carrera { get; set; }
+        public virtual DbSet<ciclo> ciclo { get; set; }
+        public virtual DbSet<cursos> cursos { get; set; }
+        public virtual DbSet<pensum> pensum { get; set; }
+        public virtual DbSet<actividad> actividad { get; set; }
+        public virtual DbSet<catedratico> catedratico { get; set; }
+        public virtual DbSet<det_seccion> det_seccion { get; set; }
+        public virtual DbSet<estudiante> estudiante { get; set; }
+        public virtual DbSet<nota> nota { get; set; }
+        public virtual DbSet<seccion> seccion { get; set; }
     }
 }

@@ -1,0 +1,67 @@
+﻿@model waPruebaLogin.Models.cursos
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>cursos</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.creditos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.creditos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.prerequisitos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.prerequisitos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.carrera.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.carrera.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ciclo.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ciclo.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pensum.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pensum.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.cod_curso }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

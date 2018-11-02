@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Notas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Carné</th>
+            <th>Nombre</th>
+            @foreach (var itm in ViewBag.actividades) {
+                <th>@itm.nombre</th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in ViewBag.estudiantes) {
+            <tr>
+                <td>@item.Carne</td>
+                <td>@item.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>

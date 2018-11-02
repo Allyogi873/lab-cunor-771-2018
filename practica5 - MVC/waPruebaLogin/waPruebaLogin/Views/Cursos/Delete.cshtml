@@ -1,0 +1,73 @@
+﻿@model waPruebaLogin.Models.cursos
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>cursos</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.creditos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.creditos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.prerequisitos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.prerequisitos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.carrera.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.carrera.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ciclo.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ciclo.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pensum.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pensum.nombre)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

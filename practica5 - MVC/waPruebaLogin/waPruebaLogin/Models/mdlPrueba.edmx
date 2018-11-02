@@ -15,6 +15,15 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="actividad">
+          <Key>
+            <PropertyRef Name="cod_actividad" />
+          </Key>
+          <Property Name="cod_actividad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="cod_seccion" Type="int" />
+          <Property Name="cod_curso" Type="int" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -67,6 +76,111 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="IdRol" Type="nvarchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="carrera">
+          <Key>
+            <PropertyRef Name="cod_carrera" />
+          </Key>
+          <Property Name="cod_carrera" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="catedratico">
+          <Key>
+            <PropertyRef Name="cod_catedratico" />
+          </Key>
+          <Property Name="cod_catedratico" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_completo" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="ciclo">
+          <Key>
+            <PropertyRef Name="cod_ciclo" />
+          </Key>
+          <Property Name="cod_ciclo" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="cursos">
+          <Key>
+            <PropertyRef Name="cod_curso" />
+          </Key>
+          <Property Name="cod_curso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cod_carrera" Type="int" />
+          <Property Name="cod_ciclo" Type="int" />
+          <Property Name="cod_pensum" Type="int" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="creditos" Type="int" />
+          <Property Name="prerequisitos" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="det_seccion">
+          <Key>
+            <PropertyRef Name="cod_det_seccion" />
+          </Key>
+          <Property Name="cod_det_seccion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cod_seccion" Type="int" />
+          <Property Name="cod_estudiante" Type="int" />
+          <Property Name="promovido" Type="int" />
+        </EntityType>
+        <EntityType Name="estudiante">
+          <Key>
+            <PropertyRef Name="cod_estudiante" />
+          </Key>
+          <Property Name="cod_estudiante" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="carne" Type="varchar" MaxLength="50" />
+          <Property Name="nombre_completo" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="nota">
+          <Key>
+            <PropertyRef Name="cod_nota" />
+          </Key>
+          <Property Name="cod_nota" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cod_estudiante" Type="int" />
+          <Property Name="cod_curso" Type="int" />
+          <Property Name="cod_seccion" Type="int" />
+          <Property Name="cod_actividad" Type="int" />
+          <Property Name="nota" Type="int" />
+        </EntityType>
+        <EntityType Name="pensum">
+          <Key>
+            <PropertyRef Name="cod_pensum" />
+          </Key>
+          <Property Name="cod_pensum" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar(max)" />
+          <Property Name="descripcion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="seccion">
+          <Key>
+            <PropertyRef Name="cod_seccion" />
+          </Key>
+          <Property Name="cod_seccion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cod_curso" Type="int" />
+          <Property Name="cod_catedratico" Type="int" />
+          <Property Name="anio" Type="int" />
+          <Property Name="letra" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_actividad_curso">
+          <End Role="cursos" Type="Self.cursos" Multiplicity="0..1" />
+          <End Role="actividad" Type="Self.actividad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cursos">
+              <PropertyRef Name="cod_curso" />
+            </Principal>
+            <Dependent Role="actividad">
+              <PropertyRef Name="cod_curso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_actividad_seccion">
+          <End Role="seccion" Type="Self.seccion" Multiplicity="0..1" />
+          <End Role="actividad" Type="Self.actividad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seccion">
+              <PropertyRef Name="cod_seccion" />
+            </Principal>
+            <Dependent Role="actividad">
+              <PropertyRef Name="cod_seccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AspNetUsers_AspNetRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="0..1" />
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
@@ -76,6 +190,42 @@
             </Principal>
             <Dependent Role="AspNetUsers">
               <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cursos_carrera">
+          <End Role="carrera" Type="Self.carrera" Multiplicity="0..1" />
+          <End Role="cursos" Type="Self.cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="carrera">
+              <PropertyRef Name="cod_carrera" />
+            </Principal>
+            <Dependent Role="cursos">
+              <PropertyRef Name="cod_carrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cursos_ciclo">
+          <End Role="ciclo" Type="Self.ciclo" Multiplicity="0..1" />
+          <End Role="cursos" Type="Self.cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ciclo">
+              <PropertyRef Name="cod_ciclo" />
+            </Principal>
+            <Dependent Role="cursos">
+              <PropertyRef Name="cod_ciclo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cursos_pensum">
+          <End Role="pensum" Type="Self.pensum" Multiplicity="0..1" />
+          <End Role="cursos" Type="Self.cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pensum">
+              <PropertyRef Name="cod_pensum" />
+            </Principal>
+            <Dependent Role="cursos">
+              <PropertyRef Name="cod_pensum" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -135,16 +285,142 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_det_seccion_estudiante">
+          <End Role="estudiante" Type="Self.estudiante" Multiplicity="0..1" />
+          <End Role="det_seccion" Type="Self.det_seccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estudiante">
+              <PropertyRef Name="cod_estudiante" />
+            </Principal>
+            <Dependent Role="det_seccion">
+              <PropertyRef Name="cod_estudiante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_det_seccion_seccion">
+          <End Role="seccion" Type="Self.seccion" Multiplicity="0..1" />
+          <End Role="det_seccion" Type="Self.det_seccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seccion">
+              <PropertyRef Name="cod_seccion" />
+            </Principal>
+            <Dependent Role="det_seccion">
+              <PropertyRef Name="cod_seccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_nota_actividad">
+          <End Role="actividad" Type="Self.actividad" Multiplicity="0..1" />
+          <End Role="nota" Type="Self.nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="actividad">
+              <PropertyRef Name="cod_actividad" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="cod_actividad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_nota_curso">
+          <End Role="cursos" Type="Self.cursos" Multiplicity="0..1" />
+          <End Role="nota" Type="Self.nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cursos">
+              <PropertyRef Name="cod_curso" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="cod_curso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_nota_estudiante">
+          <End Role="estudiante" Type="Self.estudiante" Multiplicity="0..1" />
+          <End Role="nota" Type="Self.nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estudiante">
+              <PropertyRef Name="cod_estudiante" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="cod_estudiante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_nota_seccion">
+          <End Role="seccion" Type="Self.seccion" Multiplicity="0..1" />
+          <End Role="nota" Type="Self.nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seccion">
+              <PropertyRef Name="cod_seccion" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="cod_seccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_seccion_catedratico">
+          <End Role="catedratico" Type="Self.catedratico" Multiplicity="0..1" />
+          <End Role="seccion" Type="Self.seccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="catedratico">
+              <PropertyRef Name="cod_catedratico" />
+            </Principal>
+            <Dependent Role="seccion">
+              <PropertyRef Name="cod_catedratico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_seccion_curso">
+          <End Role="cursos" Type="Self.cursos" Multiplicity="0..1" />
+          <End Role="seccion" Type="Self.seccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cursos">
+              <PropertyRef Name="cod_curso" />
+            </Principal>
+            <Dependent Role="seccion">
+              <PropertyRef Name="cod_curso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="mdlPruebaStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="actividad" EntityType="Self.actividad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="carrera" EntityType="Self.carrera" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="catedratico" EntityType="Self.catedratico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ciclo" EntityType="Self.ciclo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cursos" EntityType="Self.cursos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="det_seccion" EntityType="Self.det_seccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="estudiante" EntityType="Self.estudiante" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="nota" EntityType="Self.nota" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pensum" EntityType="Self.pensum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="seccion" EntityType="Self.seccion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_actividad_curso" Association="Self.FK_actividad_curso">
+            <End Role="cursos" EntitySet="cursos" />
+            <End Role="actividad" EntitySet="actividad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_actividad_seccion" Association="Self.FK_actividad_seccion">
+            <End Role="seccion" EntitySet="seccion" />
+            <End Role="actividad" EntitySet="actividad" />
+          </AssociationSet>
           <AssociationSet Name="FK_AspNetUsers_AspNetRoles" Association="Self.FK_AspNetUsers_AspNetRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cursos_carrera" Association="Self.FK_cursos_carrera">
+            <End Role="carrera" EntitySet="carrera" />
+            <End Role="cursos" EntitySet="cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cursos_ciclo" Association="Self.FK_cursos_ciclo">
+            <End Role="ciclo" EntitySet="ciclo" />
+            <End Role="cursos" EntitySet="cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cursos_pensum" Association="Self.FK_cursos_pensum">
+            <End Role="pensum" EntitySet="pensum" />
+            <End Role="cursos" EntitySet="cursos" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -161,6 +437,38 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_det_seccion_estudiante" Association="Self.FK_det_seccion_estudiante">
+            <End Role="estudiante" EntitySet="estudiante" />
+            <End Role="det_seccion" EntitySet="det_seccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_det_seccion_seccion" Association="Self.FK_det_seccion_seccion">
+            <End Role="seccion" EntitySet="seccion" />
+            <End Role="det_seccion" EntitySet="det_seccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_nota_actividad" Association="Self.FK_nota_actividad">
+            <End Role="actividad" EntitySet="actividad" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_nota_curso" Association="Self.FK_nota_curso">
+            <End Role="cursos" EntitySet="cursos" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_nota_estudiante" Association="Self.FK_nota_estudiante">
+            <End Role="estudiante" EntitySet="estudiante" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_nota_seccion" Association="Self.FK_nota_seccion">
+            <End Role="seccion" EntitySet="seccion" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_seccion_catedratico" Association="Self.FK_seccion_catedratico">
+            <End Role="catedratico" EntitySet="catedratico" />
+            <End Role="seccion" EntitySet="seccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_seccion_curso" Association="Self.FK_seccion_curso">
+            <End Role="cursos" EntitySet="cursos" />
+            <End Role="seccion" EntitySet="seccion" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -283,6 +591,68 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="carrera" EntityType="mdlPrueba.carrera" />
+          <EntitySet Name="ciclo" EntityType="mdlPrueba.ciclo" />
+          <EntitySet Name="cursos" EntityType="mdlPrueba.cursos" />
+          <EntitySet Name="pensum" EntityType="mdlPrueba.pensum" />
+          <AssociationSet Name="FK_cursos_carrera" Association="mdlPrueba.FK_cursos_carrera">
+            <End Role="carrera" EntitySet="carrera" />
+            <End Role="cursos" EntitySet="cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cursos_ciclo" Association="mdlPrueba.FK_cursos_ciclo">
+            <End Role="ciclo" EntitySet="ciclo" />
+            <End Role="cursos" EntitySet="cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cursos_pensum" Association="mdlPrueba.FK_cursos_pensum">
+            <End Role="pensum" EntitySet="pensum" />
+            <End Role="cursos" EntitySet="cursos" />
+          </AssociationSet>
+          <EntitySet Name="actividad" EntityType="mdlPrueba.actividad" />
+          <EntitySet Name="catedratico" EntityType="mdlPrueba.catedratico" />
+          <EntitySet Name="det_seccion" EntityType="mdlPrueba.det_seccion" />
+          <EntitySet Name="estudiante" EntityType="mdlPrueba.estudiante" />
+          <EntitySet Name="nota" EntityType="mdlPrueba.nota" />
+          <EntitySet Name="seccion" EntityType="mdlPrueba.seccion" />
+          <AssociationSet Name="FK_actividad_curso" Association="mdlPrueba.FK_actividad_curso">
+            <End Role="cursos" EntitySet="cursos" />
+            <End Role="actividad" EntitySet="actividad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_actividad_seccion" Association="mdlPrueba.FK_actividad_seccion">
+            <End Role="seccion" EntitySet="seccion" />
+            <End Role="actividad" EntitySet="actividad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_nota_actividad" Association="mdlPrueba.FK_nota_actividad">
+            <End Role="actividad" EntitySet="actividad" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_seccion_catedratico" Association="mdlPrueba.FK_seccion_catedratico">
+            <End Role="catedratico" EntitySet="catedratico" />
+            <End Role="seccion" EntitySet="seccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_nota_curso" Association="mdlPrueba.FK_nota_curso">
+            <End Role="cursos" EntitySet="cursos" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_seccion_curso" Association="mdlPrueba.FK_seccion_curso">
+            <End Role="cursos" EntitySet="cursos" />
+            <End Role="seccion" EntitySet="seccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_det_seccion_estudiante" Association="mdlPrueba.FK_det_seccion_estudiante">
+            <End Role="estudiante" EntitySet="estudiante" />
+            <End Role="det_seccion" EntitySet="det_seccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_det_seccion_seccion" Association="mdlPrueba.FK_det_seccion_seccion">
+            <End Role="seccion" EntitySet="seccion" />
+            <End Role="det_seccion" EntitySet="det_seccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_nota_estudiante" Association="mdlPrueba.FK_nota_estudiante">
+            <End Role="estudiante" EntitySet="estudiante" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_nota_seccion" Association="mdlPrueba.FK_nota_seccion">
+            <End Role="seccion" EntitySet="seccion" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_AspNetUsers_AspNetRoles">
           <End Type="mdlPrueba.AspNetRoles" Role="AspNetRoles" Multiplicity="0..1" />
@@ -293,6 +663,278 @@
             </Principal>
             <Dependent Role="AspNetUsers">
               <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="carrera">
+          <Key>
+            <PropertyRef Name="cod_carrera" />
+          </Key>
+          <Property Name="cod_carrera" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cursos" Relationship="mdlPrueba.FK_cursos_carrera" FromRole="carrera" ToRole="cursos" />
+        </EntityType>
+        <EntityType Name="ciclo">
+          <Key>
+            <PropertyRef Name="cod_ciclo" />
+          </Key>
+          <Property Name="cod_ciclo" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cursos" Relationship="mdlPrueba.FK_cursos_ciclo" FromRole="ciclo" ToRole="cursos" />
+        </EntityType>
+        <EntityType Name="cursos">
+          <Key>
+            <PropertyRef Name="cod_curso" />
+          </Key>
+          <Property Name="cod_curso" Type="Int32" Nullable="false" />
+          <Property Name="cod_carrera" Type="Int32" />
+          <Property Name="cod_ciclo" Type="Int32" />
+          <Property Name="cod_pensum" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="creditos" Type="Int32" />
+          <Property Name="prerequisitos" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="carrera" Relationship="mdlPrueba.FK_cursos_carrera" FromRole="cursos" ToRole="carrera" />
+          <NavigationProperty Name="ciclo" Relationship="mdlPrueba.FK_cursos_ciclo" FromRole="cursos" ToRole="ciclo" />
+          <NavigationProperty Name="pensum" Relationship="mdlPrueba.FK_cursos_pensum" FromRole="cursos" ToRole="pensum" />
+          <NavigationProperty Name="actividad" Relationship="mdlPrueba.FK_actividad_curso" FromRole="cursos" ToRole="actividad" />
+          <NavigationProperty Name="nota" Relationship="mdlPrueba.FK_nota_curso" FromRole="cursos" ToRole="nota" />
+          <NavigationProperty Name="seccion" Relationship="mdlPrueba.FK_seccion_curso" FromRole="cursos" ToRole="seccion" />
+        </EntityType>
+        <EntityType Name="pensum">
+          <Key>
+            <PropertyRef Name="cod_pensum" />
+          </Key>
+          <Property Name="cod_pensum" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cursos" Relationship="mdlPrueba.FK_cursos_pensum" FromRole="pensum" ToRole="cursos" />
+        </EntityType>
+        <Association Name="FK_cursos_carrera">
+          <End Type="mdlPrueba.carrera" Role="carrera" Multiplicity="0..1" />
+          <End Type="mdlPrueba.cursos" Role="cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="carrera">
+              <PropertyRef Name="cod_carrera" />
+            </Principal>
+            <Dependent Role="cursos">
+              <PropertyRef Name="cod_carrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cursos_ciclo">
+          <End Type="mdlPrueba.ciclo" Role="ciclo" Multiplicity="0..1" />
+          <End Type="mdlPrueba.cursos" Role="cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ciclo">
+              <PropertyRef Name="cod_ciclo" />
+            </Principal>
+            <Dependent Role="cursos">
+              <PropertyRef Name="cod_ciclo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cursos_pensum">
+          <End Type="mdlPrueba.pensum" Role="pensum" Multiplicity="0..1" />
+          <End Type="mdlPrueba.cursos" Role="cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pensum">
+              <PropertyRef Name="cod_pensum" />
+            </Principal>
+            <Dependent Role="cursos">
+              <PropertyRef Name="cod_pensum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="actividad">
+          <Key>
+            <PropertyRef Name="cod_actividad" />
+          </Key>
+          <Property Name="cod_actividad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cod_seccion" Type="Int32" />
+          <Property Name="cod_curso" Type="Int32" />
+          <NavigationProperty Name="cursos" Relationship="mdlPrueba.FK_actividad_curso" FromRole="actividad" ToRole="cursos" />
+          <NavigationProperty Name="seccion" Relationship="mdlPrueba.FK_actividad_seccion" FromRole="actividad" ToRole="seccion" />
+          <NavigationProperty Name="nota" Relationship="mdlPrueba.FK_nota_actividad" FromRole="actividad" ToRole="nota" />
+        </EntityType>
+        <EntityType Name="catedratico">
+          <Key>
+            <PropertyRef Name="cod_catedratico" />
+          </Key>
+          <Property Name="cod_catedratico" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_completo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="seccion" Relationship="mdlPrueba.FK_seccion_catedratico" FromRole="catedratico" ToRole="seccion" />
+        </EntityType>
+        <EntityType Name="det_seccion">
+          <Key>
+            <PropertyRef Name="cod_det_seccion" />
+          </Key>
+          <Property Name="cod_det_seccion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cod_seccion" Type="Int32" />
+          <Property Name="cod_estudiante" Type="Int32" />
+          <Property Name="promovido" Type="Int32" />
+          <NavigationProperty Name="estudiante" Relationship="mdlPrueba.FK_det_seccion_estudiante" FromRole="det_seccion" ToRole="estudiante" />
+          <NavigationProperty Name="seccion" Relationship="mdlPrueba.FK_det_seccion_seccion" FromRole="det_seccion" ToRole="seccion" />
+        </EntityType>
+        <EntityType Name="estudiante">
+          <Key>
+            <PropertyRef Name="cod_estudiante" />
+          </Key>
+          <Property Name="cod_estudiante" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="carne" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre_completo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="det_seccion" Relationship="mdlPrueba.FK_det_seccion_estudiante" FromRole="estudiante" ToRole="det_seccion" />
+          <NavigationProperty Name="nota" Relationship="mdlPrueba.FK_nota_estudiante" FromRole="estudiante" ToRole="nota" />
+        </EntityType>
+        <EntityType Name="nota">
+          <Key>
+            <PropertyRef Name="cod_nota" />
+          </Key>
+          <Property Name="cod_nota" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cod_estudiante" Type="Int32" />
+          <Property Name="cod_curso" Type="Int32" />
+          <Property Name="cod_seccion" Type="Int32" />
+          <Property Name="cod_actividad" Type="Int32" />
+          <Property Name="nota1" Type="Int32" />
+          <NavigationProperty Name="actividad" Relationship="mdlPrueba.FK_nota_actividad" FromRole="nota" ToRole="actividad" />
+          <NavigationProperty Name="cursos" Relationship="mdlPrueba.FK_nota_curso" FromRole="nota" ToRole="cursos" />
+          <NavigationProperty Name="estudiante" Relationship="mdlPrueba.FK_nota_estudiante" FromRole="nota" ToRole="estudiante" />
+          <NavigationProperty Name="seccion" Relationship="mdlPrueba.FK_nota_seccion" FromRole="nota" ToRole="seccion" />
+        </EntityType>
+        <EntityType Name="seccion">
+          <Key>
+            <PropertyRef Name="cod_seccion" />
+          </Key>
+          <Property Name="cod_seccion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cod_curso" Type="Int32" />
+          <Property Name="cod_catedratico" Type="Int32" />
+          <Property Name="anio" Type="Int32" />
+          <Property Name="letra" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="actividad" Relationship="mdlPrueba.FK_actividad_seccion" FromRole="seccion" ToRole="actividad" />
+          <NavigationProperty Name="catedratico" Relationship="mdlPrueba.FK_seccion_catedratico" FromRole="seccion" ToRole="catedratico" />
+          <NavigationProperty Name="cursos" Relationship="mdlPrueba.FK_seccion_curso" FromRole="seccion" ToRole="cursos" />
+          <NavigationProperty Name="det_seccion" Relationship="mdlPrueba.FK_det_seccion_seccion" FromRole="seccion" ToRole="det_seccion" />
+          <NavigationProperty Name="nota" Relationship="mdlPrueba.FK_nota_seccion" FromRole="seccion" ToRole="nota" />
+        </EntityType>
+        <Association Name="FK_actividad_curso">
+          <End Type="mdlPrueba.cursos" Role="cursos" Multiplicity="0..1" />
+          <End Type="mdlPrueba.actividad" Role="actividad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cursos">
+              <PropertyRef Name="cod_curso" />
+            </Principal>
+            <Dependent Role="actividad">
+              <PropertyRef Name="cod_curso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_actividad_seccion">
+          <End Type="mdlPrueba.seccion" Role="seccion" Multiplicity="0..1" />
+          <End Type="mdlPrueba.actividad" Role="actividad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seccion">
+              <PropertyRef Name="cod_seccion" />
+            </Principal>
+            <Dependent Role="actividad">
+              <PropertyRef Name="cod_seccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_nota_actividad">
+          <End Type="mdlPrueba.actividad" Role="actividad" Multiplicity="0..1" />
+          <End Type="mdlPrueba.nota" Role="nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="actividad">
+              <PropertyRef Name="cod_actividad" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="cod_actividad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_seccion_catedratico">
+          <End Type="mdlPrueba.catedratico" Role="catedratico" Multiplicity="0..1" />
+          <End Type="mdlPrueba.seccion" Role="seccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="catedratico">
+              <PropertyRef Name="cod_catedratico" />
+            </Principal>
+            <Dependent Role="seccion">
+              <PropertyRef Name="cod_catedratico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_nota_curso">
+          <End Type="mdlPrueba.cursos" Role="cursos" Multiplicity="0..1" />
+          <End Type="mdlPrueba.nota" Role="nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cursos">
+              <PropertyRef Name="cod_curso" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="cod_curso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_seccion_curso">
+          <End Type="mdlPrueba.cursos" Role="cursos" Multiplicity="0..1" />
+          <End Type="mdlPrueba.seccion" Role="seccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cursos">
+              <PropertyRef Name="cod_curso" />
+            </Principal>
+            <Dependent Role="seccion">
+              <PropertyRef Name="cod_curso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_det_seccion_estudiante">
+          <End Type="mdlPrueba.estudiante" Role="estudiante" Multiplicity="0..1" />
+          <End Type="mdlPrueba.det_seccion" Role="det_seccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estudiante">
+              <PropertyRef Name="cod_estudiante" />
+            </Principal>
+            <Dependent Role="det_seccion">
+              <PropertyRef Name="cod_estudiante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_det_seccion_seccion">
+          <End Type="mdlPrueba.seccion" Role="seccion" Multiplicity="0..1" />
+          <End Type="mdlPrueba.det_seccion" Role="det_seccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seccion">
+              <PropertyRef Name="cod_seccion" />
+            </Principal>
+            <Dependent Role="det_seccion">
+              <PropertyRef Name="cod_seccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_nota_estudiante">
+          <End Type="mdlPrueba.estudiante" Role="estudiante" Multiplicity="0..1" />
+          <End Type="mdlPrueba.nota" Role="nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estudiante">
+              <PropertyRef Name="cod_estudiante" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="cod_estudiante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_nota_seccion">
+          <End Type="mdlPrueba.seccion" Role="seccion" Multiplicity="0..1" />
+          <End Type="mdlPrueba.nota" Role="nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seccion">
+              <PropertyRef Name="cod_seccion" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="cod_seccion" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -366,6 +1008,106 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="carrera">
+            <EntityTypeMapping TypeName="mdlPrueba.carrera">
+              <MappingFragment StoreEntitySet="carrera">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="cod_carrera" ColumnName="cod_carrera" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ciclo">
+            <EntityTypeMapping TypeName="mdlPrueba.ciclo">
+              <MappingFragment StoreEntitySet="ciclo">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="cod_ciclo" ColumnName="cod_ciclo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cursos">
+            <EntityTypeMapping TypeName="mdlPrueba.cursos">
+              <MappingFragment StoreEntitySet="cursos">
+                <ScalarProperty Name="prerequisitos" ColumnName="prerequisitos" />
+                <ScalarProperty Name="creditos" ColumnName="creditos" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="cod_pensum" ColumnName="cod_pensum" />
+                <ScalarProperty Name="cod_ciclo" ColumnName="cod_ciclo" />
+                <ScalarProperty Name="cod_carrera" ColumnName="cod_carrera" />
+                <ScalarProperty Name="cod_curso" ColumnName="cod_curso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pensum">
+            <EntityTypeMapping TypeName="mdlPrueba.pensum">
+              <MappingFragment StoreEntitySet="pensum">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="cod_pensum" ColumnName="cod_pensum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="actividad">
+            <EntityTypeMapping TypeName="mdlPrueba.actividad">
+              <MappingFragment StoreEntitySet="actividad">
+                <ScalarProperty Name="cod_curso" ColumnName="cod_curso" />
+                <ScalarProperty Name="cod_seccion" ColumnName="cod_seccion" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="cod_actividad" ColumnName="cod_actividad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="catedratico">
+            <EntityTypeMapping TypeName="mdlPrueba.catedratico">
+              <MappingFragment StoreEntitySet="catedratico">
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="cod_catedratico" ColumnName="cod_catedratico" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="det_seccion">
+            <EntityTypeMapping TypeName="mdlPrueba.det_seccion">
+              <MappingFragment StoreEntitySet="det_seccion">
+                <ScalarProperty Name="promovido" ColumnName="promovido" />
+                <ScalarProperty Name="cod_estudiante" ColumnName="cod_estudiante" />
+                <ScalarProperty Name="cod_seccion" ColumnName="cod_seccion" />
+                <ScalarProperty Name="cod_det_seccion" ColumnName="cod_det_seccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="estudiante">
+            <EntityTypeMapping TypeName="mdlPrueba.estudiante">
+              <MappingFragment StoreEntitySet="estudiante">
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="carne" ColumnName="carne" />
+                <ScalarProperty Name="cod_estudiante" ColumnName="cod_estudiante" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="nota">
+            <EntityTypeMapping TypeName="mdlPrueba.nota">
+              <MappingFragment StoreEntitySet="nota">
+                <ScalarProperty Name="nota1" ColumnName="nota" />
+                <ScalarProperty Name="cod_actividad" ColumnName="cod_actividad" />
+                <ScalarProperty Name="cod_seccion" ColumnName="cod_seccion" />
+                <ScalarProperty Name="cod_curso" ColumnName="cod_curso" />
+                <ScalarProperty Name="cod_estudiante" ColumnName="cod_estudiante" />
+                <ScalarProperty Name="cod_nota" ColumnName="cod_nota" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="seccion">
+            <EntityTypeMapping TypeName="mdlPrueba.seccion">
+              <MappingFragment StoreEntitySet="seccion">
+                <ScalarProperty Name="letra" ColumnName="letra" />
+                <ScalarProperty Name="anio" ColumnName="anio" />
+                <ScalarProperty Name="cod_catedratico" ColumnName="cod_catedratico" />
+                <ScalarProperty Name="cod_curso" ColumnName="cod_curso" />
+                <ScalarProperty Name="cod_seccion" ColumnName="cod_seccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
