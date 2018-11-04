@@ -46,10 +46,18 @@ namespace waPruebaLogin.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "cod_catedratico,nombre_completo")] catedratico catedratico)
+        public ActionResult Create(catedratico catedratico)
         {
             if (ModelState.IsValid)
             {
+                if (Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
+                {
+                    var file = Request.Files[0];
+                    string archivo = (DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + file.FileName).ToLower();
+                    catedratico.dir_foto = archivo;
+                    file.SaveAs(Server.MapPath("~/Uploads/catedraticos/" + archivo));
+                }
+
                 db.catedratico.Add(catedratico);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,15 +86,26 @@ namespace waPruebaLogin.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "cod_catedratico,nombre_completo")] catedratico catedratico)
+        public ActionResult Edit(catedratico catedratico)
         {
+            catedratico original = db.catedratico.Find(catedratico.cod_catedratico);
             if (ModelState.IsValid)
             {
-                db.Entry(catedratico).State = EntityState.Modified;
+                
+                original.nombre_completo = catedratico.nombre_completo;
+                if (Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
+                {
+                    var file = Request.Files[0];
+                    string archivo = (DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + file.FileName).ToLower();
+                    original.dir_foto = archivo;
+                    file.SaveAs(Server.MapPath("~/Uploads/catedraticos/" + archivo));
+                }
+
+                db.Entry(original).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(catedratico);
+            return View(original);
         }
 
         // GET: Catedraticos/Delete/5

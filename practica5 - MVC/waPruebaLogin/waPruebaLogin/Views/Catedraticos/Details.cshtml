@@ -18,7 +18,13 @@
         <dd>
             @Html.DisplayFor(model => model.nombre_completo)
         </dd>
-
+        <dt>Imagen</dt>
+        <dd>
+            @if (Model.dir_foto != "" && Model.dir_foto != null)
+            {
+                <img src="~/Uploads/catedraticos/@Model.dir_foto" height="80" />
+            }
+        </dd>
     </dl>
 </div>
 <p>

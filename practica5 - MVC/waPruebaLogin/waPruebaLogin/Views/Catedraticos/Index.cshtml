@@ -13,8 +13,9 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.nombre_completo)
+            Nombre completo
         </th>
+        <th>Imagen</th>
         <th></th>
     </tr>
 
@@ -22,6 +23,12 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.nombre_completo)
+        </td>
+        <td>
+            @if (item.dir_foto != "" && item.dir_foto != null)
+            {
+                <img src="~/Uploads/catedraticos/@item.dir_foto" height="80" />
+            }
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.cod_catedratico }) |

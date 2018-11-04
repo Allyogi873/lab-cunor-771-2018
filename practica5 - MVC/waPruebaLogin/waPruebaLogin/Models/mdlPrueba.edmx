@@ -90,6 +90,7 @@
           </Key>
           <Property Name="cod_catedratico" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre_completo" Type="varchar(max)" />
+          <Property Name="dir_foto" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="ciclo">
           <Key>
@@ -766,6 +767,7 @@
           <Property Name="cod_catedratico" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre_completo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="seccion" Relationship="mdlPrueba.FK_seccion_catedratico" FromRole="catedratico" ToRole="seccion" />
+          <Property Name="dir_foto" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="det_seccion">
           <Key>
@@ -1061,6 +1063,7 @@
           <EntitySetMapping Name="catedratico">
             <EntityTypeMapping TypeName="mdlPrueba.catedratico">
               <MappingFragment StoreEntitySet="catedratico">
+                <ScalarProperty Name="dir_foto" ColumnName="dir_foto" />
                 <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
                 <ScalarProperty Name="cod_catedratico" ColumnName="cod_catedratico" />
               </MappingFragment>
