@@ -3,24 +3,47 @@
     ViewBag.Title = "Notas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@using (Html.BeginForm())
+{
 <table class="table table-hover">
     <thead>
         <tr>
             <th>Carné</th>
             <th>Nombre</th>
-            @foreach (var itm in ViewBag.actividades) {
+            @foreach (var itm in ViewBag.actividades)
+            {
                 <th>@itm.nombre</th>
             }
+            <th>Total</th>
         </tr>
     </thead>
 
     <tbody>
-        @foreach (var item in ViewBag.estudiantes) {
+        @{ 
+            var contador = 0;
+        }
+        @foreach (var item in ViewBag.estudiantes)
+        {
             <tr>
-                <td>@item.Carne</td>
-                <td>@item.Nombre</td>
+                <td>@item.carne</td>
+                <td>@item.nombre_completo</td>
+                @foreach (var item2 in ViewBag.actividades)
+                {
+
+                    <td>
+                        <input type="hidden" name="notas[@contador].cod_estudiante" value="@item.cod_estudiante" />
+                        <input type="hidden" name="notas[@contador].cod_curso" value="@ViewBag.cod_curso" />
+                        <input type="hidden" name="notas[@contador].cod_seccion" value="@ViewBag.cod_seccion" />
+                        <input type="hidden" name="notas[@contador].cod_actividad" value="@item2.cod_actividad" />
+                        <input type="number" name="notas[@contador].nota1" class="form-control" />
+                    </td>
+                    contador++;
+                }
+                
+                <th><input class="form-control" /></th>
             </tr>
         }
     </tbody>
 </table>
+                <button type="submit" class="btn btn-success">Guardar</button>
+            }
