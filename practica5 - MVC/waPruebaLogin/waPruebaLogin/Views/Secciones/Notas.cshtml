@@ -3,9 +3,17 @@
     ViewBag.Title = "Notas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h3>Notas</h3>
+<h4>Curso: @ViewBag.seccion.cursos.nombre</h4>
+<h4>Seccion: @ViewBag.seccion.letra</h4>
+<h4>Catedrático: @ViewBag.seccion.catedratico.nombre_completo</h4>
+<div class="col-md-12">
+    @Html.ActionLink("<< Lista de Secciones", "Index",null,new { @class="btn btn-primary"})
+</div>
 @using (Html.BeginForm())
 {
-<table class="table table-hover">
+<table id="tblNotas" class="table table-hover">
     <thead>
         <tr>
             <th>Carné</th>
@@ -35,15 +43,46 @@
                         <input type="hidden" name="notas[@contador].cod_curso" value="@ViewBag.cod_curso" />
                         <input type="hidden" name="notas[@contador].cod_seccion" value="@ViewBag.cod_seccion" />
                         <input type="hidden" name="notas[@contador].cod_actividad" value="@item2.cod_actividad" />
-                        <input type="number" name="notas[@contador].nota1" class="form-control" />
+                        <input type="number" id="nota_@item.cod_estudiante@ViewBag.cod_curso@ViewBag.cod_seccion@item2.cod_actividad" name="notas[@contador].nota1" class="form-control nota" />
                     </td>
                     contador++;
                 }
                 
-                <th><input class="form-control" /></th>
+                <th><input class="form-control total" /></th>
             </tr>
         }
     </tbody>
 </table>
                 <button type="submit" class="btn btn-success">Guardar</button>
             }
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            @foreach (var itm in ViewBag.notas) {
+
+            <text>
+                $("#nota_@itm.cod_estudiante@itm.cod_curso@itm.cod_seccion@itm.cod_actividad").val(@itm.nota1);
+            </text>
+            }
+
+            calcular();
+
+            $(".nota").change(function () {
+                calcular();
+            });
+        });
+
+        function calcular() {
+            var total = 0;
+            $('#tblNotas> tbody').find('tr').each(function (i, tr) {
+                total = 0;
+                $(tr).find('.nota').each(function (i1, fl) {
+                    total += parseFloat($(fl).val());
+                }).promise().done(function () {
+                    $(tr).find('.total').val(total);
+                });
+            })
+        }
+    </script>
+}

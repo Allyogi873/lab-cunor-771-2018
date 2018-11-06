@@ -44,7 +44,7 @@
         <td>
             @Html.ActionLink("Agregar Actividades", "ListaActividades", new { id=item.cod_seccion }) |
             @Html.ActionLink("Notas", "Notas", new { id=item.cod_seccion }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.cod_seccion })
+            @Html.ActionLink("Generar Cuadro", "Generar", new { id=item.cod_seccion },new { @target = "_blank" })
         </td>
     </tr>
 }
