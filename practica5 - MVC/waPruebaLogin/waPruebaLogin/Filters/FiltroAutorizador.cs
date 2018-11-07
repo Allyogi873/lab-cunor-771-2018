@@ -20,21 +20,44 @@ namespace waPruebaLogin.Filters
             if (filterContext == null)
                 HandleUnauthorizedRequest(filterContext);
 
+            // Si ya ha iniciado sesión el usuario
             if (filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 username = HttpContext.Current.User.Identity.Name;
                 AspNetUsers usr = db.AspNetUsers.Where(a => a.UserName == username).FirstOrDefault();
 
-                if (usr.IdRol != "1")
+                permisos permiso = (from m in db.permisos
+                                    where m.controlador == controllerName && m.vista == actionName && m.IdRol == usr.IdRol
+                                    select m).FirstOrDefault();
+
+                if (permiso == null)
                 {
-                    if (controllerName == "usuarios")
+                    if (controllerName != "home" && controllerName != "account")
                     {
                         HandleUnauthorizedRequest(filterContext);
                     }
                 }
+                else {
+                    if (controllerName != "home")
+                    {
+                        if (permiso.estado == 0) {
+                            HandleUnauthorizedRequest(filterContext);
+                        }
+                    }
+                }
+
+
+
+                //if (usr.IdRol != "1")
+                //{
+                //    if (controllerName == "usuarios" || controllerName == "secciones")
+                //    {
+                //        HandleUnauthorizedRequest(filterContext);
+                //    }
+                //}
             }
             else {
-                if (controllerName != "account" && actionName != "login") {
+                if (controllerName != "account") {
                     filterContext.Result =
                            new RedirectToRouteResult
                                (

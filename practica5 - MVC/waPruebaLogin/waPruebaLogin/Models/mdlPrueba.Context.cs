@@ -40,5 +40,6 @@ namespace waPruebaLogin.Models
         public virtual DbSet<estudiante> estudiante { get; set; }
         public virtual DbSet<nota> nota { get; set; }
         public virtual DbSet<seccion> seccion { get; set; }
+        public virtual DbSet<permisos> permisos { get; set; }
     }
 }

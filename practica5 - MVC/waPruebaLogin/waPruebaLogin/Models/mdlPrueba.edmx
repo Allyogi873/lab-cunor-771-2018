@@ -148,6 +148,16 @@
           <Property Name="nombre" Type="varchar(max)" />
           <Property Name="descripcion" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="permisos">
+          <Key>
+            <PropertyRef Name="cod_permiso" />
+          </Key>
+          <Property Name="cod_permiso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="controlador" Type="varchar(max)" Nullable="false" />
+          <Property Name="vista" Type="varchar(max)" Nullable="false" />
+          <Property Name="IdRol" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="estado" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="seccion">
           <Key>
             <PropertyRef Name="cod_seccion" />
@@ -358,6 +368,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_permisos_AspNetRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
+          <End Role="permisos" Type="Self.permisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="permisos">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_seccion_catedratico">
           <End Role="catedratico" Type="Self.catedratico" Multiplicity="0..1" />
           <End Role="seccion" Type="Self.seccion" Multiplicity="*" />
@@ -398,6 +420,7 @@
           <EntitySet Name="estudiante" EntityType="Self.estudiante" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="nota" EntityType="Self.nota" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="pensum" EntityType="Self.pensum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="permisos" EntityType="Self.permisos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seccion" EntityType="Self.seccion" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_actividad_curso" Association="Self.FK_actividad_curso">
             <End Role="cursos" EntitySet="cursos" />
@@ -463,6 +486,10 @@
             <End Role="seccion" EntitySet="seccion" />
             <End Role="nota" EntitySet="nota" />
           </AssociationSet>
+          <AssociationSet Name="FK_permisos_AspNetRoles" Association="Self.FK_permisos_AspNetRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="permisos" EntitySet="permisos" />
+          </AssociationSet>
           <AssociationSet Name="FK_seccion_catedratico" Association="Self.FK_seccion_catedratico">
             <End Role="catedratico" EntitySet="catedratico" />
             <End Role="seccion" EntitySet="seccion" />
@@ -494,6 +521,7 @@
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="mdlPrueba.FK_AspNetUsers_AspNetRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <NavigationProperty Name="permisos" Relationship="mdlPrueba.FK_permisos_AspNetRoles" FromRole="AspNetRoles" ToRole="permisos" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -653,6 +681,11 @@
           <AssociationSet Name="FK_nota_seccion" Association="mdlPrueba.FK_nota_seccion">
             <End Role="seccion" EntitySet="seccion" />
             <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <EntitySet Name="permisos" EntityType="mdlPrueba.permisos" />
+          <AssociationSet Name="FK_permisos_AspNetRoles" Association="mdlPrueba.FK_permisos_AspNetRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="permisos" EntitySet="permisos" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="FK_AspNetUsers_AspNetRoles">
@@ -940,6 +973,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="permisos">
+          <Key>
+            <PropertyRef Name="cod_permiso" />
+          </Key>
+          <Property Name="cod_permiso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="controlador" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="vista" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdRol" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AspNetRoles" Relationship="mdlPrueba.FK_permisos_AspNetRoles" FromRole="permisos" ToRole="AspNetRoles" />
+        </EntityType>
+        <Association Name="FK_permisos_AspNetRoles">
+          <End Type="mdlPrueba.AspNetRoles" Role="AspNetRoles" Multiplicity="1" />
+          <End Type="mdlPrueba.permisos" Role="permisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="permisos">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1108,6 +1164,17 @@
                 <ScalarProperty Name="cod_catedratico" ColumnName="cod_catedratico" />
                 <ScalarProperty Name="cod_curso" ColumnName="cod_curso" />
                 <ScalarProperty Name="cod_seccion" ColumnName="cod_seccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="permisos">
+            <EntityTypeMapping TypeName="mdlPrueba.permisos">
+              <MappingFragment StoreEntitySet="permisos">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="vista" ColumnName="vista" />
+                <ScalarProperty Name="controlador" ColumnName="controlador" />
+                <ScalarProperty Name="cod_permiso" ColumnName="cod_permiso" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

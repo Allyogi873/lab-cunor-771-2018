@@ -226,6 +226,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Convertidor.cs" />
+    <Compile Include="Helpers\HelperEnlaces.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\actividad.cs">
       <DependentUpon>mdlPrueba.tt</DependentUpon>
@@ -284,6 +285,9 @@
       <DependentUpon>mdlPrueba.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\pensum.cs">
+      <DependentUpon>mdlPrueba.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\permisos.cs">
       <DependentUpon>mdlPrueba.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\seccion.cs">

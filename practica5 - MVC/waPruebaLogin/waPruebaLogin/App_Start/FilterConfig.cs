@@ -9,7 +9,7 @@ namespace waPruebaLogin
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            //filters.Add(new FiltroAutorizador());
+            filters.Add(new FiltroAutorizador());
         }
     }
 }

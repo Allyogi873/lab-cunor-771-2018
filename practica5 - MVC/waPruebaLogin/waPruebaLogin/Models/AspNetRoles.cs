@@ -19,6 +19,7 @@ namespace waPruebaLogin.Models
         {
             this.AspNetUsers = new HashSet<AspNetUsers>();
             this.AspNetUsers1 = new HashSet<AspNetUsers>();
+            this.permisos = new HashSet<permisos>();
         }
     
         public string Id { get; set; }
@@ -28,5 +29,7 @@ namespace waPruebaLogin.Models
         public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUsers> AspNetUsers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<permisos> permisos { get; set; }
     }
 }

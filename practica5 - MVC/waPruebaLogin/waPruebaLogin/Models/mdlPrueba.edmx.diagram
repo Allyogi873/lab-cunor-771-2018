@@ -37,6 +37,8 @@
         <AssociationConnector Association="mdlPrueba.FK_det_seccion_seccion" />
         <AssociationConnector Association="mdlPrueba.FK_nota_estudiante" />
         <AssociationConnector Association="mdlPrueba.FK_nota_seccion" />
+        <EntityTypeShape EntityType="mdlPrueba.permisos" Width="1.5" PointX="3" PointY="16.375" />
+        <AssociationConnector Association="mdlPrueba.FK_permisos_AspNetRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
